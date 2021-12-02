@@ -28,7 +28,7 @@ namespace CustomerManagementSystem
         {
             services.AddControllers();
             services.AddDbContext<CustomerManagementDbContext>(options => options.UseInMemoryDatabase(databaseName: "CustomerManagementDB"));
-            services.AddSingleton<IDatabaseService, DatabaseService>();
+            services.AddScoped<IDatabaseService, DatabaseService>(); //adding scoped DI service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

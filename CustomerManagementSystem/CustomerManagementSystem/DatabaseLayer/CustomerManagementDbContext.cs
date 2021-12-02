@@ -52,13 +52,15 @@ namespace CustomerManagementSystem.DatabaseLayer
                 {
                     State = 1,
                     Value = 100,
-                    InvoiceDate = DateTime.Now
+                    InvoiceDate = DateTime.Now,
+                    CustomerId = 1
                 },
                 new Invoice
                 {
                     State = 2,
                     Value = 20,
-                    InvoiceDate = DateTime.Now
+                    InvoiceDate = DateTime.Now,
+                    CustomerId = 2
                 });
 
             dbContext.SaveChanges();

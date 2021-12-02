@@ -6,6 +6,7 @@ using CustomerManagementSystem.DatabaseLayer;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using CustomerManagementSystem.DatabaseLayer.DbEntities;
 
 namespace CustomerManagementSystem.Controllers
 {
@@ -24,33 +25,83 @@ namespace CustomerManagementSystem.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var totalCustomers = _dbService.GetAllCustomers();
-            return Ok(totalCustomers);
+            try
+            {
+                var totalCustomers = _dbService.GetAllCustomers();
+                return Ok(totalCustomers);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // GET api/<controller>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(Int64 id)
         {
-            return "value";
+            var customer = _dbService.GetSingleCustomer(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(customer);
+            }
+
         }
 
         // POST api/<controller>
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]Customer value)
         {
+            try
+            {
+                var isAdded = _dbService.AddCustomer(value);
+                if (isAdded)
+                {
+                    return Created("api/customer/" + value.CustomerId, "");
+                }
+                else
+                {
+                    return StatusCode(503);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // PUT api/<controller>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public IActionResult Put(int id, [FromBody]Customer value)
         {
+            try
+            {
+                var isUpdated = _dbService.UpdateCustomer(id, value);
+                return Ok(isUpdated);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(Int64 id)
         {
+            try
+            {
+                var isUpdated = _dbService.DeleteCustomer(id);
+                return Ok(isUpdated);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }
